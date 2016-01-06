@@ -9,13 +9,14 @@ describe Oystercard do
   let(:test_numbers)       { [5, 0.5] }
   let(:station)            { double :station }
   let(:exit_station)       { double :exit_station }
+  let(:journey)            { [station,  exit_station] }
 
   it "that are NEW should have a balance of #{Oystercard::BALANCE_LOWER_LIMIT}" do
     expect(subject.balance).to eq min_card_balance
   end
 
   it "that are NEW should have zero journey history" do
-    expect(subject.journeys).to eq []
+    expect(subject.journeys).to be_empty
   end
 
   describe "#top_up" do
@@ -45,7 +46,8 @@ describe Oystercard do
         subject.top_up(max_card_balance)
         subject.touch_in(station)
         subject.touch_out(exit_station)
-        expect(subject.journeys.count).to eq 1
+        expect(subject.journeys).to include journey
+        # expect(subject.journeys.count).to eq 1
       end
 
       describe "#touch_in" do

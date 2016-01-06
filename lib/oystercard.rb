@@ -8,10 +8,7 @@ class Oystercard
   # STATION_NAMES = []
 
   def initialize
-    @balance = BALANCE_LOWER_LIMIT
-    @entry_station = nil
-    @journeys = []
-    @latest_journey = { entry: "", exit: "" }
+    @balance, @entry_station, @journeys, @latest_journey = BALANCE_LOWER_LIMIT, nil, [], { entry: "", exit: "" }
   end
 
   def top_up(ammount)
