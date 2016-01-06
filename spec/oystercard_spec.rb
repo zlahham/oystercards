@@ -47,13 +47,15 @@ describe Oystercard do
 
     it 'should be true when #touch_in' do
       subject.touch_in
-      expect(subject.in_journey?).to be !journey_status
+      expect(subject).to be_in_journey
+      # expect(subject.in_journey?).to be !journey_status
     end
 
     it 'should be false when #touch_out' do
       subject.touch_in
       subject.touch_out
-      expect(subject.in_journey?).to be journey_status
+      expect(subject).not_to be_in_journey
+      # expect(subject.in_journey?).to be journey_status
     end
 
     it 'raises error if #touch_out is without previous #touch_in' do
