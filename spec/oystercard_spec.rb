@@ -13,6 +13,9 @@ describe Oystercard do
   it "that are NEW should have a balance of #{Oystercard::BALANCE_LOWER_LIMIT}" do
     expect(subject.balance).to eq min_card_balance
   end
+  it "that are NEW should have zero journey history" do
+    expect(subject.journeys).to eq []
+  end
 
   describe "#top_up" do
     it { is_expected.to respond_to(:top_up).with(1).argument }
