@@ -30,6 +30,6 @@ class Oystercard
   end
 
   def touch_out
-    #code
+    @in_journey = INITIAL_JOURNEY_STATUS
   end
 end

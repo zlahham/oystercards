@@ -46,14 +46,19 @@ describe Oystercard do
       expect(subject.in_journey?).to be journey_status
     end
 
-    it 'when #touch_in changes the journey status to true' do
+    it 'should be true when #touch_in' do
       subject.touch_in
       expect(subject.in_journey?).to be !journey_status
     end
 
-    it 'when #touch_out changes the journey status to false' do
+    it 'should be false when #touch_out' do
       subject.touch_in
-      expect(subject.in_journey?).to be !journey_status
+      subject.touch_out
+      expect(subject.in_journey?).to be journey_status
+    end
+
+    xit 'should only accept #touch_out if previously #touch_in' do
+
     end
   end
 
