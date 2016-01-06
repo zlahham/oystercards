@@ -42,29 +42,32 @@ describe Oystercard do
 
     it 'should be false to begin with' do
       expect(subject).not_to be_in_journey
-      # expect(subject.in_journey?).to be journey_status
     end
 
-    it 'should be true when #touch_in' do
-      subject.touch_in
-      expect(subject).to be_in_journey
-      # expect(subject.in_journey?).to be !journey_status
+    context 'when #touch_in or #touch_out' do
+      before{ subject.top_up(max_balance) }
+
+      it 'should be true when #touch_in' do
+        subject.touch_in
+        expect(subject).to be_in_journey
+      end
+
+      it 'should be false when #touch_out' do
+        subject.touch_in
+        subject.touch_out
+        expect(subject).not_to be_in_journey
+      end
+
+      it 'raises error if #touch_out is without previous #touch_in' do
+        expect{ subject.touch_out }.to raise_error("You cannot touch out if you are not in a journey")
+      end
+
+      it 'raises error if #touch_in is with a previous #touch_in' do
+        subject.touch_in
+        expect{ subject.touch_in }.to raise_error("You cannot touch in again if you are in a journey")
+      end
     end
 
-    it 'should be false when #touch_out' do
-      subject.touch_in
-      subject.touch_out
-      expect(subject).not_to be_in_journey
-      # expect(subject.in_journey?).to be journey_status
-    end
-
-    it 'raises error if #touch_out is without previous #touch_in' do
-      expect{ subject.touch_out }.to raise_error("You cannot touch out if you are not in a journey")
-    end
-    it 'raises error if #touch_in is with a previous #touch_in' do
-      subject.touch_in
-      expect{ subject.touch_in }.to raise_error("You cannot touch in again if you are in a journey")
-    end
   end
 
 
