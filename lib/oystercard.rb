@@ -3,10 +3,12 @@ class Oystercard
 
   BALANCE_LIMIT = 90
   BALANCE_LOWER_LIMIT = 0
+  INITIAL_JOURNEY_STATUS = false
 
 
   def initialize
     @balance = BALANCE_LOWER_LIMIT
+    @in_journey = INITIAL_JOURNEY_STATUS
   end
 
   def top_up(ammount)
@@ -20,7 +22,14 @@ class Oystercard
   end
 
   def in_journey?
-    false
+    @in_journey
+  end
 
+  def touch_in
+    @in_journey = !INITIAL_JOURNEY_STATUS
+  end
+
+  def touch_out
+    #code
   end
 end

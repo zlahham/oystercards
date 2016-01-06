@@ -39,19 +39,17 @@ describe Oystercard do
   end
 
   describe "#in_journey?" do
-    it { is_expected.to respond_to(:in_journey?) }
+    it { is_expected.to respond_to(:in_journey?, :touch_in, :touch_out) }
 
     it 'should be false to begin with' do
       expect(subject.in_journey?).to be false
     end
+
+    it 'when #touch_in changes the journey status to true' do
+      subject.touch_in
+      expect(subject.in_journey?).to be true
+    end
   end
 
-  describe "#touch_in?" do
-
-  end
-
-  describe "#touch_out" do
-
-  end
 
 end
