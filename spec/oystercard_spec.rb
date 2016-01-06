@@ -41,7 +41,8 @@ describe Oystercard do
     it { is_expected.to respond_to(:in_journey?, :touch_in, :touch_out) }
 
     it 'should be false to begin with' do
-      expect(subject.in_journey?).to be journey_status
+      expect(subject).not_to be_in_journey
+      # expect(subject.in_journey?).to be journey_status
     end
 
     it 'should be true when #touch_in' do
