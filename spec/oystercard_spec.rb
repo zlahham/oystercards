@@ -9,6 +9,8 @@ describe Oystercard do
     expect(subject.balance).to eq min_balance
   end
 
+  # it { is_expected.to respond_to(:top_up, :deduct).with(1).argument }
+
   describe "#top_up" do
     it { is_expected.to respond_to(:top_up).with(1).argument }
 
@@ -34,6 +36,22 @@ describe Oystercard do
     it 'cannot deduct from balance when insufficient funds' do
       expect{ subject.deduct(test_number+1) }.to raise_error("Sorry, you have insufficient funds for this journey")
     end
+  end
+
+  describe "#in_journey?" do
+    it { is_expected.to respond_to(:in_journey?) }
+
+    it 'should be false to begin with' do
+      expect(subject.in_journey?).to be false
+    end
+  end
+
+  describe "#touch_in?" do
+
+  end
+
+  describe "#touch_out" do
+
   end
 
 end

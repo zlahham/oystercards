@@ -18,4 +18,9 @@ class Oystercard
     fail "Sorry, you have insufficient funds for this journey" if balance - ammount < BALANCE_LOWER_LIMIT
     @balance -= ammount
   end
+
+  def in_journey?
+    false
+
+  end
 end
