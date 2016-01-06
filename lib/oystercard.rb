@@ -2,9 +2,11 @@ class Oystercard
   attr_reader :balance
 
   BALANCE_LIMIT = 90
+  BALANCE_LOWER_LIMIT = 0
+
 
   def initialize
-    @balance = 0
+    @balance = BALANCE_LOWER_LIMIT
   end
 
   def top_up(ammount)
@@ -13,5 +15,7 @@ class Oystercard
   end
 
   def deduct(ammount)
+    fail "Sorry, you have insufficient funds for this journey" if balance - ammount < BALANCE_LOWER_LIMIT
+    @balance -= ammount
   end
 end
