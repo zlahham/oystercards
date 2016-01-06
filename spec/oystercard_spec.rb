@@ -2,6 +2,7 @@ require "oystercard"
 
 describe Oystercard do
   let(:max_balance) { Oystercard::BALANCE_LIMIT }
+
   it 'that are NEW should have a balance of zero' do
     expect(subject.balance).to eq 0
   end
@@ -15,7 +16,7 @@ describe Oystercard do
 
     it "has a maximum top_up limit of £#{Oystercard::BALANCE_LIMIT}" do
       subject.top_up(max_balance)
-      expect{ subject.top_up(1) }.to raise_error("Sorry, the maximum balance is #{max_balance}")
+      expect{ subject.top_up(1) }.to raise_error("Sorry, the maximum balance is £#{max_balance}")
     end
   end
 

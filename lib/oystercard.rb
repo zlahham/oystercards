@@ -8,7 +8,7 @@ class Oystercard
   end
 
   def top_up(ammount)
-    fail "Sorry, the maximum balance is 90" if balance + ammount > BALANCE_LIMIT
+    fail "Sorry, the maximum balance is £#{BALANCE_LIMIT}" if balance + ammount > BALANCE_LIMIT
     @balance += ammount
   end
 end
