@@ -4,6 +4,7 @@ describe Oystercard do
   let(:max_balance) { Oystercard::BALANCE_LIMIT }
   let(:min_balance) { Oystercard::BALANCE_LOWER_LIMIT }
   let(:test_number) { 5 }
+  let(:journey_status) { Oystercard::INITIAL_JOURNEY_STATUS }
 
   it 'that are NEW should have a balance of zero' do
     expect(subject.balance).to eq min_balance
@@ -42,12 +43,17 @@ describe Oystercard do
     it { is_expected.to respond_to(:in_journey?, :touch_in, :touch_out) }
 
     it 'should be false to begin with' do
-      expect(subject.in_journey?).to be false
+      expect(subject.in_journey?).to be journey_status
     end
 
     it 'when #touch_in changes the journey status to true' do
       subject.touch_in
-      expect(subject.in_journey?).to be true
+      expect(subject.in_journey?).to be !journey_status
+    end
+
+    it 'when #touch_out changes the journey status to false' do
+      subject.touch_in
+      expect(subject.in_journey?).to be !journey_status
     end
   end
 
