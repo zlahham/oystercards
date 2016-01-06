@@ -5,8 +5,8 @@ describe Oystercard do
     expect(subject.balance).to eq 0
   end
 
-  it 'should accept top_ups' do
-    expect(subject).to respond_to :top_up
+  describe "#top_up" do
+    it { is_expected.to respond_to(:top_up).with(1).argument }
   end
 
 end
