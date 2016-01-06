@@ -17,7 +17,7 @@ class Oystercard
   end
 
   def deduct(ammount)
-    fail "Sorry, you have insufficient funds for this journey" if balance - ammount < BALANCE_LOWER_LIMIT
+    fail 'Sorry, you have insufficient funds for this journey' if balance - ammount < BALANCE_LOWER_LIMIT
     @balance -= ammount
   end
 
@@ -26,10 +26,12 @@ class Oystercard
   end
 
   def touch_in
+    fail 'You cannot touch in again if you are in a journey' if in_journey? == true
     @in_journey = !INITIAL_JOURNEY_STATUS
   end
 
   def touch_out
+    fail 'You cannot touch out if you are not in a journey' if in_journey? == false
     @in_journey = INITIAL_JOURNEY_STATUS
   end
 end

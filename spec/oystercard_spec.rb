@@ -10,8 +10,6 @@ describe Oystercard do
     expect(subject.balance).to eq min_balance
   end
 
-  # it { is_expected.to respond_to(:top_up, :deduct).with(1).argument }
-
   describe "#top_up" do
     it { is_expected.to respond_to(:top_up).with(1).argument }
 
@@ -57,8 +55,12 @@ describe Oystercard do
       expect(subject.in_journey?).to be journey_status
     end
 
-    xit 'should only accept #touch_out if previously #touch_in' do
-
+    it 'raises error if #touch_out is without previous #touch_in' do
+      expect{ subject.touch_out }.to raise_error("You cannot touch out if you are not in a journey")
+    end
+    it 'raises error if #touch_in is with a previous #touch_in' do
+      subject.touch_in
+      expect{ subject.touch_in }.to raise_error("You cannot touch in again if you are in a journey")
     end
   end
 
