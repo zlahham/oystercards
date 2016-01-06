@@ -41,6 +41,13 @@ describe Oystercard do
     context 'when #touch_in or #touch_out' do
       it { is_expected.to respond_to(:touch_in, :touch_out).with(1).argument }
 
+      it 'creates one journey after touch_in and then touch_out' do
+        subject.top_up(max_card_balance)
+        subject.touch_in(station)
+        subject.touch_out(exit_station)
+        expect(subject.journeys.count).to eq 1
+      end
+
       describe "#touch_in" do
         it 'should be true when #touch_in' do
           subject.top_up(max_card_balance)
