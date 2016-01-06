@@ -20,4 +20,8 @@ describe Oystercard do
     end
   end
 
+  describe "#deduct" do
+    it { is_expected.to respond_to(:deduct).with(1).argument }
+  end
+
 end
