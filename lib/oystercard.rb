@@ -3,8 +3,8 @@ class Oystercard
 
   BALANCE_LIMIT = 90
   BALANCE_LOWER_LIMIT = 0
+  BALANCE_BARRIER_LIMIT = 1
   INITIAL_JOURNEY_STATUS = false
-
 
   def initialize
     @balance = BALANCE_LOWER_LIMIT
@@ -27,6 +27,7 @@ class Oystercard
 
   def touch_in
     fail 'You cannot touch in again if you are in a journey' if in_journey? == true
+    fail "You cannot touch in again if your balance is less than #{BALANCE_BARRIER_LIMIT}" if balance < BALANCE_BARRIER_LIMIT
     @in_journey = !INITIAL_JOURNEY_STATUS
   end
 

@@ -1,10 +1,11 @@
 require "oystercard"
 
 describe Oystercard do
-  let(:max_balance) { Oystercard::BALANCE_LIMIT }
-  let(:min_balance) { Oystercard::BALANCE_LOWER_LIMIT }
-  let(:test_number) { 5 }
-  let(:journey_status) { Oystercard::INITIAL_JOURNEY_STATUS }
+  let(:max_balance)     { Oystercard::BALANCE_LIMIT }
+  let(:min_balance)     { Oystercard::BALANCE_LOWER_LIMIT }
+  let(:barrier_balance) { Oystercard::BALANCE_BARRIER_LIMIT }
+  let(:journey_status)  { Oystercard::INITIAL_JOURNEY_STATUS }
+  let(:test_numbers)     { [5, 6, 89.5] }
 
   it 'that are NEW should have a balance of zero' do
     expect(subject.balance).to eq min_balance
@@ -14,7 +15,7 @@ describe Oystercard do
     it { is_expected.to respond_to(:top_up).with(1).argument }
 
     it 'can top up the balance with the appropriate ammount' do
-      expect{ subject.top_up(test_number) }.to change{ subject.balance }.by(test_number)
+      expect{ subject.top_up(test_numbers[0]) }.to change{ subject.balance }.by(test_numbers[0])
     end
 
     it "has a maximum top_up limit of £#{Oystercard::BALANCE_LIMIT}" do
@@ -24,16 +25,16 @@ describe Oystercard do
   end
 
   describe "#deduct" do
-    before {  subject.top_up(test_number) }
+    before {  subject.top_up(test_numbers[0]) }
 
     it { is_expected.to respond_to(:deduct).with(1).argument }
 
     it 'subtracts the ammount from the balance' do
-      expect{ subject.deduct(test_number) }.to change{ subject.balance }.by(-test_number)
+      expect{ subject.deduct(test_numbers[0]) }.to change{ subject.balance }.by(-test_numbers[0])
     end
 
     it 'cannot deduct from balance when insufficient funds' do
-      expect{ subject.deduct(test_number+1) }.to raise_error("Sorry, you have insufficient funds for this journey")
+      expect{ subject.deduct(test_numbers[1]) }.to raise_error("Sorry, you have insufficient funds for this journey")
     end
   end
 
@@ -47,28 +48,34 @@ describe Oystercard do
     context 'when #touch_in or #touch_out' do
       before{ subject.top_up(max_balance) }
 
-      it 'should be true when #touch_in' do
-        subject.touch_in
-        expect(subject).to be_in_journey
+      describe "#touch_in" do
+        it 'should be true when #touch_in' do
+          subject.touch_in
+          expect(subject).to be_in_journey
+        end
+
+        it 'raises error if #touch_in is with a previous #touch_in' do
+          subject.touch_in
+          expect{ subject.touch_in }.to raise_error("You cannot touch in again if you are in a journey")
+        end
+
+        it 'raises an error if balance is less than minimum barrier balance' do
+          subject.deduct(test_numbers[2])
+          expect{ subject.touch_in }.to raise_error("You cannot touch in again if your balance is less than #{barrier_balance}")
+        end
       end
 
-      it 'should be false when #touch_out' do
-        subject.touch_in
-        subject.touch_out
-        expect(subject).not_to be_in_journey
-      end
+      describe "#touch_out" do
+        it 'should be false when #touch_out' do
+          subject.touch_in
+          subject.touch_out
+          expect(subject).not_to be_in_journey
+        end
 
-      it 'raises error if #touch_out is without previous #touch_in' do
-        expect{ subject.touch_out }.to raise_error("You cannot touch out if you are not in a journey")
-      end
-
-      it 'raises error if #touch_in is with a previous #touch_in' do
-        subject.touch_in
-        expect{ subject.touch_in }.to raise_error("You cannot touch in again if you are in a journey")
+        it 'raises error if #touch_out is without previous #touch_in' do
+          expect{ subject.touch_out }.to raise_error("You cannot touch out if you are not in a journey")
+        end
       end
     end
-
   end
-
-
 end
