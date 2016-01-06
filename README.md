@@ -43,3 +43,8 @@ In order to pay for my journey
 As a customer
 I need to know where I've travelled from
 ```
+```
+In order to know where I have been
+As a customer
+I want to see to all my previous trips
+```

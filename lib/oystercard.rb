@@ -1,5 +1,5 @@
 class Oystercard
-  attr_reader :balance, :entry_station
+  attr_reader :balance, :entry_station, :journeys
 
   BALANCE_UPPER_LIMIT = 90
   BALANCE_LOWER_LIMIT = 0
@@ -10,6 +10,7 @@ class Oystercard
   def initialize
     @balance = BALANCE_LOWER_LIMIT
     @entry_station = nil
+    @journeys = []
   end
 
   def top_up(ammount)
@@ -28,7 +29,7 @@ class Oystercard
     @entry_station = station
   end
 
-  def touch_out
+  def touch_out(station)
     fail 'You cannot touch out if you are not in a journey' if in_journey? == false
     deduct(JOURNEY_PRICE)
     @entry_station = nil

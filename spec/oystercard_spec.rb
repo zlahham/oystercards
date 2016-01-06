@@ -1,15 +1,16 @@
 require "oystercard"
 
 describe Oystercard do
-  let(:max_card_balance)     { Oystercard::BALANCE_UPPER_LIMIT }
-  let(:min_card_balance)     { Oystercard::BALANCE_LOWER_LIMIT }
-  let(:barrier_balance) { Oystercard::BALANCE_BARRIER_LIMIT }
-  let(:journey_status)  { Oystercard::INITIAL_JOURNEY_STATUS }
-  let(:journey_price)   { Oystercard::JOURNEY_PRICE }
-  let(:test_numbers)    { [5, 0.5] }
-  let(:station){ double :station }
+  let(:max_card_balance)   { Oystercard::BALANCE_UPPER_LIMIT }
+  let(:min_card_balance)   { Oystercard::BALANCE_LOWER_LIMIT }
+  let(:barrier_balance)    { Oystercard::BALANCE_BARRIER_LIMIT }
+  let(:journey_status)     { Oystercard::INITIAL_JOURNEY_STATUS }
+  let(:journey_price)      { Oystercard::JOURNEY_PRICE }
+  let(:test_numbers)       { [5, 0.5] }
+  let(:station)            { double :station }
+  let(:exit_station)       { double :exit_station }
 
-  it 'that are NEW should have a balance of zero' do
+  it "that are NEW should have a balance of #{Oystercard::BALANCE_LOWER_LIMIT}" do
     expect(subject.balance).to eq min_card_balance
   end
 
@@ -27,13 +28,14 @@ describe Oystercard do
   end
 
   describe "#in_journey?" do
-    it { is_expected.to respond_to(:in_journey?, :touch_in, :touch_out) }
+    it { is_expected.to respond_to(:in_journey?) }
 
     it 'should be false to begin with' do
       expect(subject).not_to be_in_journey
     end
 
     context 'when #touch_in or #touch_out' do
+      it { is_expected.to respond_to(:touch_in, :touch_out).with(1).argument }
 
       describe "#touch_in" do
         it 'should be true when #touch_in' do
@@ -65,17 +67,17 @@ describe Oystercard do
 
         it 'should be false when #touch_out' do
           subject.touch_in(station)
-          subject.touch_out
+          subject.touch_out(exit_station)
           expect(subject).not_to be_in_journey
         end
 
         it 'raises error if #touch_out is without previous #touch_in' do
-          expect { subject.touch_out }.to raise_error("You cannot touch out if you are not in a journey")
+          expect { subject.touch_out(exit_station) }.to raise_error("You cannot touch out if you are not in a journey")
         end
 
         it 'changes the balance according to the journey cost' do
           subject.touch_in(station)
-          expect { subject.touch_out }.to change{ subject.balance }.by(-journey_price)
+          expect { subject.touch_out(exit_station) }.to change{ subject.balance }.by(-journey_price)
         end
       end
     end
