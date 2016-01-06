@@ -13,6 +13,7 @@ describe Oystercard do
   it "that are NEW should have a balance of #{Oystercard::BALANCE_LOWER_LIMIT}" do
     expect(subject.balance).to eq min_card_balance
   end
+
   it "that are NEW should have zero journey history" do
     expect(subject.journeys).to eq []
   end
@@ -58,10 +59,10 @@ describe Oystercard do
           expect { subject.touch_in(station) }.to raise_error("You cannot touch in if your balance is less than #{barrier_balance}")
         end
 
-        it 'remembers the name of the station' do
+        it 'remembers the name of the entry station' do
           subject.top_up(max_card_balance)
           subject.touch_in(station)
-          expect(subject.entry_station).to eq(station)
+          expect(subject.latest_journey[:entry]).to eq(station)
         end
       end
 
@@ -81,6 +82,12 @@ describe Oystercard do
         it 'changes the balance according to the journey cost' do
           subject.touch_in(station)
           expect { subject.touch_out(exit_station) }.to change{ subject.balance }.by(-journey_price)
+        end
+
+        it 'remembers the name of the station' do
+          subject.touch_in(station)
+          subject.touch_out(exit_station)
+          expect(subject.latest_journey[:exit]).to eq(exit_station)
         end
       end
     end
