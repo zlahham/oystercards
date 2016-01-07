@@ -2,7 +2,6 @@ class Oystercard
   attr_reader :balance, :entry_station, :journeys, :latest_journey
 
   BALANCE_UPPER_LIMIT, BALANCE_LOWER_LIMIT, BALANCE_BARRIER_LIMIT, JOURNEY_PRICE = 90, 0, 1, 2
-  # STATION_NAMES = []
 
   def initialize
     @balance, @entry_station, @journeys, @latest_journey = BALANCE_LOWER_LIMIT, nil, [], { entry: "", exit: "" }
@@ -12,7 +11,6 @@ class Oystercard
     fail "Sorry, the maximum balance is £#{BALANCE_UPPER_LIMIT}" if balance + ammount > BALANCE_UPPER_LIMIT
     @balance += ammount
   end
-
 
   def in_journey?
     !!entry_station

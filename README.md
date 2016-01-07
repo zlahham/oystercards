@@ -48,3 +48,8 @@ In order to know where I have been
 As a customer
 I want to see to all my previous trips
 ```
+```
+In order to know how far I have travelled
+As a customer
+I want to know what zone a station is in
+```

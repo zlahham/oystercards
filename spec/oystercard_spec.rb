@@ -47,7 +47,6 @@ describe Oystercard do
         subject.touch_in(station)
         subject.touch_out(exit_station)
         expect(subject.journeys).to include journey
-        # expect(subject.journeys.count).to eq 1
       end
 
       describe "#touch_in" do
