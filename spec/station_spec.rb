@@ -10,4 +10,12 @@ describe Station do
       expect(subject.station_name). have_content object
     end
   end
+
+  describe "#zone" do
+    it { is_expected.to respond_to(:zone) }
+
+    xit "displays the name of the Zone" do
+      expect(subject.station_name). have_content object
+    end
+  end
 end
