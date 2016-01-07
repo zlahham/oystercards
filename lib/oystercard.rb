@@ -19,16 +19,16 @@ class Oystercard
   end
 
   def touch_in(station)
-    st_name = Station.new(station).name
+    entry_station_name = Station.new(station).name
     failures_touch_in
-    touch_in_allocations(st_name)
+    touch_in_allocations(entry_station_name)
   end
 
   def touch_out(station)
-    st_name = Station.new(station).name
+    exit_station_name = Station.new(station).name
     fail 'You cannot touch out if you are not in a journey' if in_journey? == false
     deduct(JOURNEY_PRICE)
-    touch_out_allocations(st_name)
+    touch_out_allocations(exit_station_name)
     puts "\nThank you for using your Oystercard, your previous journey was from #{@latest_journey[:entry]} to #{@latest_journey[:exit]} and your remaining balance is #{@balance}\n"
   end
 
