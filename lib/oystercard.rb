@@ -1,3 +1,5 @@
+require_relative "station"
+
 class Oystercard
   attr_reader :balance, :entry_station, :journeys, :latest_journey
 
@@ -17,14 +19,16 @@ class Oystercard
   end
 
   def touch_in(station)
+    st_name = Station.new(station).name
     failures_touch_in
-    touch_in_allocations(station)
+    touch_in_allocations(st_name)
   end
 
   def touch_out(station)
+    st_name = Station.new(station).name
     fail 'You cannot touch out if you are not in a journey' if in_journey? == false
     deduct(JOURNEY_PRICE)
-    touch_out_allocations(station)
+    touch_out_allocations(st_name)
     puts "\nThank you for using your Oystercard, your previous journey was from #{@latest_journey[:entry]} to #{@latest_journey[:exit]} and your remaining balance is #{@balance}\n"
   end
 
@@ -50,4 +54,5 @@ class Oystercard
     @entry_station = station
     @latest_journey[:entry] = station
   end
+
 end

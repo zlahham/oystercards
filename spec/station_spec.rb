@@ -3,19 +3,17 @@ require "station"
 
 describe Station do
 
-  describe "#station_name" do
-    it { is_expected.to respond_to(:station_name) }
+  let(:station) { described_class.new(:Victoria) }
+  subject {described_class.new(:Victoria)}
 
-    xit "displays the name of the Station" do
-      expect(subject.station_name). have_content object
-    end
+  it { is_expected.to respond_to(:name, :zone) }
+
+  it "displays the name of the Station" do
+    expect(station.name).to eq :Victoria
   end
 
-  describe "#zone" do
-    it { is_expected.to respond_to(:zone) }
-
-    xit "displays the name of the Zone" do
-      expect(subject.station_name). have_content object
-    end
+  it "displays the Zone number" do
+    expect(station.zone).to eq 1
   end
+
 end
